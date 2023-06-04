@@ -1,6 +1,0 @@
----
-roles:
-  - name: micro_k8s
-    src: https://github.com/alessonviana/ansible_role_microk8s.git
-    scm: git
-    version: "master"
