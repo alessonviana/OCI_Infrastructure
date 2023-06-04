@@ -1,0 +1,50 @@
+name: "GitHub Actions Example"
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+
+jobs:
+  terraform:
+    name: "Unit Tests"
+    runs-on: ubuntu-18.04
+    env:
+      working-directory: ./
+      TF_WORKSPACE: my-workspace
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v1
+        with:
+          terraform_version: 1.0.0
+
+      - name: Terraform Format
+        id: fmt
+        run: terraform fmt -check
+        continue-on-error: true
+
+      - name: Terraform Init
+        id: init
+        run: terraform init
+           
+      - name: Terraform apply
+        id: apply
+        if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+        run: terraform apply -auto-approve -input=false
+        working-directory: ${{ env.working-directory }}
+        env:
+          TF_VAR_assume_role: "my-github-actions-role"
+
+      - name: Terraform Validate
+        id: validate
+        run: terraform validate -no-color
+
+      - name: Validação do tfsec
+        id: tfsec
+        run: |
+          docker run --rm -v $PWD:/app -w /app tfsec/tfsec . 
