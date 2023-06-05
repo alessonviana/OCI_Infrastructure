@@ -3,7 +3,7 @@ name: "GitHub Actions Example"
 on:
   push:
     branches:
-      - main
+      - kubernetes
   pull_request:
 
 jobs:
@@ -11,7 +11,7 @@ jobs:
     name: "Unit Tests"
     runs-on: ubuntu-18.04
     env:
-      working-directory: ./
+      working-directory: ./Terraform
       TF_WORKSPACE: my-workspace
 
     steps:
