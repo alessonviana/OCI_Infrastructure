@@ -11,7 +11,7 @@ oci:
 	echo "43" | oci session authenticate
 
 terraform:
-	terraform -chdir=k3s-terraform/ init
+	terraform -chdir=Terraform/ init
 	echo "yes" | terraform -chdir=Terraform/ apply --auto-approve
 
 ansible_k3s:
