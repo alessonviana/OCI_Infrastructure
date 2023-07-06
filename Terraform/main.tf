@@ -16,7 +16,9 @@ data "oci_core_images" "_" {
   compartment_id           = local.compartment_id
   shape                    = var.shape
   operating_system         = "Canonical Ubuntu"
-  operating_system_version = "20.04"
+  operating_system_version = "22.04"
+  #operating_system         = "Oracle Linux"
+  #operating_system_version = "7.9"
 }
 
 resource "oci_core_instance" "_" {
@@ -51,16 +53,5 @@ resource "oci_core_instance" "_" {
       "tail -f /var/log/cloud-init-output.log &",
       "cloud-init status --wait >/dev/null",
     ]
-  }
-}
-
-locals {
-  nodes = {
-    for i in range(1, 1 + var.how_many_nodes) :
-    i => {
-      node_name  = format("node%d", i)
-      ip_address = format("10.0.0.%d", 10 + i)
-      role       = i == 1 ? "controlplane" : "worker"
-    }
   }
 }
