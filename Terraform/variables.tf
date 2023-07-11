@@ -1,6 +1,6 @@
 variable "name" {
   type    = string
-  default = "kubernetes-project"
+  default = "k8"
 }
 
 /*
